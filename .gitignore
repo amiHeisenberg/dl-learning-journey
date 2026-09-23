@@ -1,0 +1,25 @@
+# python缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# conda环境（不要上传环境）
+dl-env/
+
+# 数据、大图像
+*.tif
+*.tiff
+*.png
+*.jpg
+*.jpeg
+data/
+datasets/
+
+# VSCode配置
+.vscode/
+*.ipynb_checkpoints/
+
+# 系统文件
+.DS_Store
+Thumbs.db
