@@ -74,3 +74,17 @@
 - `git restore` 是专门为工作区和暂存区设计的现代撤销工具。它有两种用法：
 	- `git restore --staged <file>`：**取消暂存**文件（将文件移出暂存区，但保留你的修改）
 	 - `git restore <file>`：彻底**丢弃**文件修改（请小心，这会删除这些修改！）
+
+
+
+git switch & git checkout
+- 切**分支**：`git switch 分支名`
+- 切**tag /commit 哈希**：`git switch -d tag/commitID`
+- 兼容旧写法，tag/commit/branch 都能用：`git checkout branch/tag/commitID`
+
+`git describe` 的​​语法是：`git describe <ref>`
+`<ref>` 可以是任何能被 Git 识别成提交记录的引用，如果你没有指定的话，Git 会使用你目前所在的位置（`HEAD`）。
+它输出的结果是这样的：`<tag>-<numCommits>-g<hash>`
+`tag` 表示的是离 `ref` 最近的标签， `numCommits` 是表示这个 `ref` 与 `tag` 相差有多少个提交记录， `hash` 表示的是你所给定的 `ref` 所表示的提交记录哈希值的前几位。(当 `ref` 提交记录上有某个标签时，则只输出标签名称)
+
+`git rebase` 命令可以带第二个参数。`git rebase main bugFix` 会先切换到 `bugFix` 分支，再把它 rebase 到 `main` 上，一步到位 —— 相当于 `git checkout bugFix; git rebase main` 的简写
