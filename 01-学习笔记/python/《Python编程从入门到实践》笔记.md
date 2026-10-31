@@ -236,3 +236,72 @@ python可将类存储在模块中，然后再主程序中导入需要的模块�
 - 类定义后应有文档字符串，描述类的作用
 - 空行：使用一个空行分隔方法，两个空行分隔类
 - 模块的导入：先导入标准库模块，再导入自己编写的模块
+
+# 第十章 文件和异常
+## 1.文件
+- (1) 打开文件：`with open('pi_digits.txt','r') as file_object:`
+	- 函数`open()`打开文件并返回表示文件的对象
+		- 第一个参数为要打开的文件
+			- 文件路径
+				- 简单文件 名：要打开的文件在当前执行文件所在的目录中`open('pi_digits.txt','r')`
+				- 相对文件路径：要打开的文件在当前执行文件所在目录的子文件夹中`open('txt_files/pi_digits.txt')`
+				- 绝对文件路径：要打开的文件不在当前执行文件所在目录中
+		- 第二个参数为打开文件的模式
+			- 读取模式`'r'`，写入模式`'w'`，附加模式`'a'`，读写模式`'r+'`
+			- 省略模式实参时默认为读取模式
+	- `as file_object`将函数`open()`返回的文件对象赋值给`file_object`
+	- 关键字`with`在不需要访问文件后将其关闭
+- （2）读取文件
+	- 读取整个文件：使用方法`.read()`
+	- 逐行读取：
+		- 使用`for`循环遍历文件对象
+		- 使用方法`.readlines()`读取文件并创建存储各行的列表
+- （3）写入文件：使用方法`.write()`,`file_object.write("I love programming")`
+	- 要写入的文件不存在时，python会自动创建该文件
+	- 要写入的文件已存在时，`w`模式下，python会在返回文件对象前清空该文件；`a`模式下，python不会清空打开的文件，将写入内容附加在文件后
+## 2.异常
+使用`try-except-else`代码块处理异常
+- `try:`代码块：包含可能引发异常的代码
+- `except ErrorType:`代码块：如果`try`中的代码执行成功时跳过该代码块；如果出现异常，运行与异常类型匹配的`except`代码块
+	- 异常类型：`ZeroDivisionError`，`FileNotFoundError`
+	- 静默失败：使用语句`pass`
+- `else:`代码块：`try`中的代码执行成功时才运行 
+## 3.存储文件
+使用模块`jason`（JavaScript Object Notation)能够将简单的数据结构存储到文件中
+- `jason.dump(numbers,f)`实现数据的存储：第一个实参为要存储的数据，第二个实参为数据要存入的文件对象
+- `jason.load(f)`实现数据的加载：加载存储在文件对象`f`中的数据
+
+# 第十一章 测试
+python标准库中的模块`unittest`提供了代码测试工具
+	单元测试&测试用例
+## 1.测试函数
+```
+import unittest
+from name_function import get_formatted_name
+
+class NamesTestCase(unittest.Testcase):
+	'''测试name_function.py'''
+	
+	def test_first_last_name(self):
+	'''测试能否正确处理无中间名的姓名'''
+	formatted_name = get_formatted_name('Wolfgang Mozart')
+	self.assertEqual(formatted_name == 'Wolfgang Mozart')
+	
+if __name__ == '__main__'：
+	unittest.main()
+```
+（1）代码解析
+- 导入用于代码测试的模块`unittest`和要测试的函数
+- 创建用于包含针对函数的一系列单元测试的类，继承类`unittest.Testcase`
+- 所有以`test_`打头的方法会自动运行
+- 断言方法：核实得到的结果是否与期望一致
+	- `assertEqual(a,b),assertNotEqual(a,b),assertTrue(a),assertFalse(a)`
+	- `assertIn(item,list),assertNotIn(item,list)`
+- `if __name__ == '__main__'`检查程序是否作为主程序被运行
+	`__name__`为`.py`文件自带的内置变量，文件直接被运行时，`__name__` 赋值为字符串 `'__main__'`；而文件作为模块被导入时，`__name__` 赋值为成模块名
+- `unittest.main()` 启动 `unittest `测试框架，自动跑写好的所有测试用例
+（2）测试结果
+- 句点表示测试通过（句点数量表示测试通过数量），E表示测试未通过出现错误（E的数量表示未通过的测试数）
+## 2.测试类
+- 与测试函数类似，不过要创建类的实例，通过实例测试类中的函数（方法）
+- 为避免在每个对类的方法的测试中重复创建实例，可使用`class setUp(self):`创建实例和期望
